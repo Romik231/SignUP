@@ -22,12 +22,18 @@ class Users extends UsersBase implements IdentityInterface
     const SCENARIO_SIGNIN = 'signin';
     const SCENARIO_SIGNUP = 'signup';
 
-    public function scenarioSignup(){
+    const STATUS_DELETED = 0;
+    const STATUS_WAIT = 5;
+    const STATUS_ACTIVE = 10;
+
+    public function scenarioSignup()
+    {
         $this->setScenario(self::SCENARIO_SIGNUP);
-        return$this;
+        return $this;
     }
 
-    public function scenarioSignin(){
+    public function scenarioSignin()
+    {
         $this->setScenario(self::SCENARIO_SIGNIN);
         return $this;
     }
@@ -36,13 +42,14 @@ class Users extends UsersBase implements IdentityInterface
     public function rules()
     {
         return array_merge([
-            ['password', 'string', 'min'=>6],
-            ['email','exist','on'=>self::SCENARIO_SIGNIN],
-            [['email'], 'unique', 'on'=>self::SCENARIO_SIGNUP],
+            ['password', 'string', 'min' => 6],
+            ['email', 'exist', 'on' => self::SCENARIO_SIGNIN],
+            [['email'], 'unique', 'on' => self::SCENARIO_SIGNUP],
             [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::class,
                 'secret' => '6Lenw7QUAAAAAPJBf2_7GYMyiNRsd7rRMomwIrrW',
                 'uncheckedMessage' => 'Please confirm that you are not a bot.'
             ],
+            ['status', 'in','range'=>[self::STATUS_DELETED, self::STATUS_WAIT, self::STATUS_ACTIVE]],
         ], parent::rules());
     }
 
@@ -55,7 +62,7 @@ class Users extends UsersBase implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return Users::find()->andWhere(['id'=>$id])->one();
+        return Users::find()->andWhere(['id' => $id])->one();
     }
 
     /**
