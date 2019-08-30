@@ -6,7 +6,6 @@
 <div class="col-md-6">
     <?php $form=\yii\bootstrap\ActiveForm::begin();?>
 
-    <?=$form->field($model, 'username')?>
     <?=$form->field($model, 'email');?>
     <?=$form->field($model,'password');?>
 

@@ -9,8 +9,9 @@ use yii\web\IdentityInterface;
  * This is the model class for table "users".
  *
  * @property int $id
- * @property string $username
  * @property string $email
+ * @property string $email_confirm_token
+ * @property int $status
  * @property string $password_hash
  * @property string $createdAt
  */
@@ -18,12 +19,12 @@ class Users extends UsersBase implements IdentityInterface
 {
     public $password;
     public $reCaptcha;
+    public $passwordRepeat;
 
     const SCENARIO_SIGNIN = 'signin';
     const SCENARIO_SIGNUP = 'signup';
 
     const STATUS_DELETED = 0;
-    const STATUS_WAIT = 5;
     const STATUS_ACTIVE = 10;
 
     public function scenarioSignup()
@@ -43,13 +44,15 @@ class Users extends UsersBase implements IdentityInterface
     {
         return array_merge([
             ['password', 'string', 'min' => 6],
+            ['password','required'],
+            ['passwordRepeat','compare','compareAttribute' => 'password'],
             ['email', 'exist', 'on' => self::SCENARIO_SIGNIN],
             [['email'], 'unique', 'on' => self::SCENARIO_SIGNUP],
-            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::class,
-                'secret' => '6Lenw7QUAAAAAPJBf2_7GYMyiNRsd7rRMomwIrrW',
-                'uncheckedMessage' => 'Please confirm that you are not a bot.'
-            ],
-            ['status', 'in','range'=>[self::STATUS_DELETED, self::STATUS_WAIT, self::STATUS_ACTIVE]],
+//            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::class,
+//                'secret' => '6Lenw7QUAAAAAPJBf2_7GYMyiNRsd7rRMomwIrrW',
+//                'uncheckedMessage' => 'Please confirm that you are not a bot.'
+//            ],
+
         ], parent::rules());
     }
 

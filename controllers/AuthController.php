@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\models\Users;
+use http\Url;
 use yii\web\Controller;
 
 class AuthController extends Controller
@@ -17,6 +18,7 @@ class AuthController extends Controller
         if (\Yii::$app->request->isPost) {
             $model->load(\Yii::$app->request->post());
             if(\Yii::$app->auth->signup($model)){
+
                 $this->redirect('/auth/sign-in');
             }
         }
