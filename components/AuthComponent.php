@@ -75,12 +75,18 @@ class AuthComponent extends Component
         return \Yii::$app->security->generateRandomString(16);
     }
 
+    public function checkEmailToken($token)
+    {
+        return Users::find()->andWhere(['email_confirm_token'=>$token])->one();
+    }
+
+
     public static function sendActivationUserMail($email, $confirm_token)
     {
 
-        $url='yii/activation/'.$confirm_token;
+        $url = \yii\helpers\Url::base(true) . '/auth/activation?code=' . $confirm_token;
 
-        $msg="<p><strong>Для этого перейдите по ссылке </strong><a href='". $url."'>$url</a></p>\r\n";
+        $msg = "<p><strong>Для этого перейдите по ссылке </strong><a href='" . $url . "'>$url</a></p>\r\n";
 
         \Yii::$app->mailer->compose()
             ->setFrom('r.spe.m.ctre.k@gmail.com')

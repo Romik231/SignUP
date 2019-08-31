@@ -5,7 +5,6 @@ namespace app\controllers;
 
 
 use app\models\Users;
-use http\Url;
 use yii\web\Controller;
 
 class AuthController extends Controller
@@ -17,7 +16,7 @@ class AuthController extends Controller
 
         if (\Yii::$app->request->isPost) {
             $model->load(\Yii::$app->request->post());
-            if(\Yii::$app->auth->signup($model)){
+            if (\Yii::$app->auth->signup($model)) {
 
                 $this->redirect('/auth/sign-in');
             }
@@ -33,12 +32,34 @@ class AuthController extends Controller
 
         if (\Yii::$app->request->isPost) {
             $model->load(\Yii::$app->request->post());
-            if(\Yii::$app->auth->signin($model)){
+            if (\Yii::$app->auth->signin($model)) {
                 $this->redirect('/');
             }
         }
 
         return $this->render('signin', ['model' => $model]);
+    }
+
+    public function actionActivation()
+    {
+        $code=\Yii::$app->request->get('code');
+        $findUser=Users::find()->andWhere(['email_confirm_token'=>$code])->one();
+
+//        $findUser =\Yii::$app->auth->checkEmailToken($code);
+        print_r($findUser->status);
+        $findUser->status = 1;
+        $findUser->save();
+        print_r($findUser->status);
+        //$findUser->status = 1;
+
+//        if(!$findUser){
+//             echo 'ошибка';
+//        }else{
+//            $findUser->status=1;
+//            $findUser->save();
+//        }
+
+
     }
 
 }
