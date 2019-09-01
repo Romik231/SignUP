@@ -82,6 +82,10 @@ class Users extends UsersBase implements IdentityInterface
         // TODO: Implement findIdentityByAccessToken() method.
     }
 
+    public function getUsername(){
+        return $this->email;
+    }
+
     /**
      * Returns an ID that can uniquely identify a user identity.
      * @return string|int an ID that uniquely identifies a user identity.

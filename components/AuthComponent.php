@@ -23,10 +23,11 @@ class AuthComponent extends Component
 
         $user->password_hash = $this->genPasswordHash($user->password);
         $user->email_confirm_token = $this->genUniqTokenPropertyEmail();
-        $this->sendActivationUserMail($user->email, $user->email_confirm_token);
 
         if (!$user->save()) {
             return false;
+        }else{
+            $this->sendActivationUserMail($user->email, $user->email_confirm_token);
         }
         return true;
     }
@@ -40,7 +41,6 @@ class AuthComponent extends Component
         }
 
         $user = $this->getUserByEmail($model->email);
-
 
         if (!$this->validationPassword($model->password, $user->password_hash)) {
             $model->addError('password', 'Неверный пароль');
@@ -75,12 +75,21 @@ class AuthComponent extends Component
         return \Yii::$app->security->generateRandomString(16);
     }
 
-    public function checkEmailToken($token)
+//Подтверждение регистрции, изменение статуса на 1
+    public function confirmEmailToken($token):bool
     {
-        return Users::find()->andWhere(['email_confirm_token'=>$token])->one();
+        $findUserForActivation = Users::find()->andWhere(['email_confirm_token' => $token])->one();
+        if (!$findUserForActivation) {
+            return false;
+        } else {
+            $findUserForActivation->status = 1;
+            $findUserForActivation->save(false);
+
+        }
+        return true;
     }
 
-
+//Отправка с подтверждением регистрации на email
     public static function sendActivationUserMail($email, $confirm_token)
     {
 

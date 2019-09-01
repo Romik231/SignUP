@@ -10,9 +10,9 @@ use Yii;
  * @property int $id
  * @property string $email
  * @property string $email_confirm_token
- * @property int $status
  * @property string $password_hash
  * @property string $createdAt
+ * @property int $status
  */
 class UsersBase extends \yii\db\ActiveRecord
 {
@@ -31,11 +31,10 @@ class UsersBase extends \yii\db\ActiveRecord
     {
         return [
             [['email', 'password_hash'], 'required'],
-            [['status'], 'integer'],
             [['createdAt'], 'safe'],
+            [['status'], 'integer'],
             [['email', 'password_hash'], 'string', 'max' => 150],
             [['email_confirm_token'], 'string', 'max' => 255],
-            [['email'], 'unique'],
             [['email_confirm_token'], 'unique'],
         ];
     }
@@ -49,9 +48,9 @@ class UsersBase extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'email' => Yii::t('app', 'Email'),
             'email_confirm_token' => Yii::t('app', 'Email Confirm Token'),
-            'status' => Yii::t('app', 'Status'),
             'password_hash' => Yii::t('app', 'Password Hash'),
             'createdAt' => Yii::t('app', 'Created At'),
+            'status' => Yii::t('app', 'Status'),
         ];
     }
 }
