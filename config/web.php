@@ -18,8 +18,8 @@ $config = [
         'reCaptcha' => [
 
             'class' => 'himiklab\yii2\recaptcha\ReCaptchaConfig',
-            'siteKeyV2' => '6Lenw7QUAAAAALzc3j_xn_AtGZi3clEMNkgZ0pj-',
-            'secretV2' => '6Lenw7QUAAAAAPJBf2_7GYMyiNRsd7rRMomwIrrW',
+            'siteKeyV2' => '6Lc_PrYUAAAAAEWFlhLlZQrYYHhb13UMPdp_5To-',
+            'secretV2' => '6Lc_PrYUAAAAAHlWg-QU-3FS88qwGlYMVLVHfBHB',
         ],
         'auth'=>['class'=>\app\components\AuthComponent::class],
         'request' => [

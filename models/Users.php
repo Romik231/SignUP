@@ -48,10 +48,10 @@ class Users extends UsersBase implements IdentityInterface
             ['passwordRepeat', 'compare', 'compareAttribute' => 'password'],
             ['email', 'exist', 'on' => self::SCENARIO_SIGNIN],
             [['email'], 'unique', 'on' => self::SCENARIO_SIGNUP],
-//            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::class,
-//                'secret' => '6Lenw7QUAAAAAPJBf2_7GYMyiNRsd7rRMomwIrrW',
-//                'uncheckedMessage' => 'Please confirm that you are not a bot.'
-//            ],
+           [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::class,
+                'secret' => '6Lc_PrYUAAAAAHlWg-QU-3FS88qwGlYMVLVHfBHB',
+              'uncheckedMessage' => 'Please confirm that you are not a bot.'
+           ],
 
         ], parent::rules());
     }
@@ -88,9 +88,6 @@ class Users extends UsersBase implements IdentityInterface
         // TODO: Implement findIdentityByAccessToken() method.
     }
 
-    public function getUsername(){
-        return $this->email;
-    }
 
     /**
      * Returns an ID that can uniquely identify a user identity.

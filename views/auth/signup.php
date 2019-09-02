@@ -15,7 +15,7 @@
     <?= $form->field($model, 'password'); ?>
     <?= $form->field($model, 'passwordRepeat')?>
     <?= $form->field($model, 'reCaptcha')->widget(\himiklab\yii2\recaptcha\ReCaptcha2::class,
-        ['siteKey'=>'6Lenw7QUAAAAALzc3j_xn_AtGZi3clEMNkgZ0pj-']);?>
+        ['siteKey'=>'6Lc_PrYUAAAAAEWFlhLlZQrYYHhb13UMPdp_5To-']);?>
 
     ])?>
 
