@@ -42,10 +42,11 @@ class AuthController extends Controller
 
     public function actionActivation()
     {
-        $code = \Yii::$app->request->get('code');
-        if(\Yii::$app->auth->ConfirmEmailToken($code)){
-            $this->redirect('/auth/sign-in');
-        }
+        $code=\Yii::$app->request->get('code');
+        \Yii::$app->auth->confirmEmailToken($code);
+        header('Refresh: 5; /auth/sign-in');
+        return $this->render('confirm');
+
 
     }
 
