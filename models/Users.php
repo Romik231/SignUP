@@ -44,8 +44,8 @@ class Users extends UsersBase implements IdentityInterface
     {
         return array_merge([
             ['password', 'string', 'min' => 6],
-            ['password','required'],
-            ['passwordRepeat','compare','compareAttribute' => 'password'],
+            ['password', 'required'],
+            ['passwordRepeat', 'compare', 'compareAttribute' => 'password'],
             ['email', 'exist', 'on' => self::SCENARIO_SIGNIN],
             [['email'], 'unique', 'on' => self::SCENARIO_SIGNUP],
 //            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::class,
@@ -66,6 +66,12 @@ class Users extends UsersBase implements IdentityInterface
     public static function findIdentity($id)
     {
         return Users::find()->andWhere(['id' => $id])->one();
+    }
+
+
+    public function getUsername()
+    {
+        return $this->email;
     }
 
     /**

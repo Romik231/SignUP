@@ -42,10 +42,12 @@ class AuthComponent extends Component
         $user = $this->getUserByEmail($model->email);
 
 
-        if (!$this->validationPassword($model->password, $user->password_hash)) {
-            $model->addError('password', 'Неверный пароль');
+        if (!$this->validationPassword($model->password, $user->password_hash) or $user->status == 0) {
+            $model->addError('password', 'Неверный пароль или учетная запись не активирована');
             return false;
-        }
+        }if($user->status == 0){
+
+    }
 
         return \Yii::$app->user->login($user, 3600);
     }
@@ -75,24 +77,27 @@ class AuthComponent extends Component
         return \Yii::$app->security->generateRandomString(16);
     }
 
-    public function checkEmailToken($token)
+//Подтверждение регистрации пользователя
+    public function confirmEmailToken($token): bool
     {
-        return Users::find()->andWhere(['email_confirm_token'=>$token])->one();
+        $findUserForActivation = Users::find()->andWhere(['email_confirm_token' => $token])->one();
+        if (!$findUserForActivation) {
+            return false;
+        } else {
+            $findUserForActivation->status = 1;
+            $findUserForActivation->save(false);
+        }
+        return true;
+
     }
 
-
+//Отправка письма с кодом подтверждения
     public static function sendActivationUserMail($email, $confirm_token)
     {
-
-        $url = \yii\helpers\Url::base(true) . '/auth/activation?code=' . $confirm_token;
-
-        $msg = "<p><strong>Для этого перейдите по ссылке </strong><a href='" . $url . "'>$url</a></p>\r\n";
-
-        \Yii::$app->mailer->compose()
+        \Yii::$app->mailer->compose('mail', compact('email', 'confirm_token'))
             ->setFrom('r.spe.m.ctre.k@gmail.com')
             ->setTo($email)
-            ->setSubject('Активация')
-            ->setHtmlBody($msg)
+            ->setSubject('Активация аккаунта')
             ->send();
     }
 

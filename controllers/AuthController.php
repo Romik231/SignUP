@@ -43,21 +43,9 @@ class AuthController extends Controller
     public function actionActivation()
     {
         $code=\Yii::$app->request->get('code');
-        $findUser=Users::find()->andWhere(['email_confirm_token'=>$code])->one();
-
-//        $findUser =\Yii::$app->auth->checkEmailToken($code);
-        print_r($findUser->status);
-        $findUser->status = 1;
-        $findUser->save();
-        print_r($findUser->status);
-        //$findUser->status = 1;
-
-//        if(!$findUser){
-//             echo 'ошибка';
-//        }else{
-//            $findUser->status=1;
-//            $findUser->save();
-//        }
+        \Yii::$app->auth->confirmEmailToken($code);
+        header('Refresh: 5; /auth/sign-in');
+        return $this->render('confirm');
 
 
     }

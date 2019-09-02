@@ -35,7 +35,6 @@ class UsersBase extends \yii\db\ActiveRecord
             [['createdAt'], 'safe'],
             [['email', 'password_hash'], 'string', 'max' => 150],
             [['email_confirm_token'], 'string', 'max' => 255],
-            [['email'], 'unique'],
             [['email_confirm_token'], 'unique'],
         ];
     }
